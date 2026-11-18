@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CityCare Hospital Management</title>
+<style>
+:root{--bg:#eef3f6;--card:#fff;--tx:#13232f;--mut:#5b6b77;--bd:#d6e0e7;--pri:#0a6f6a;--on:#fff;--soft:#dff1ef;--ok:#17703a;--okb:#dff3e6;--warn:#8a5300;--warnb:#fdf0d5;--bad:#a5281b;--badb:#fbe3df;--info:#1d4f91;--infob:#e0ebfa;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1820;--card:#15252f;--tx:#e6eef3;--mut:#93a5b1;--bd:#27404e;--pri:#3cc2b8;--on:#06201e;--soft:#16393a;--ok:#6fd392;--okb:#173a27;--warn:#f0bd62;--warnb:#3d2f12;--bad:#f2928a;--badb:#431e1b;--info:#8fb8f0;--infob:#192f4d;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0d1820;--card:#15252f;--tx:#e6eef3;--mut:#93a5b1;--bd:#27404e;--pri:#3cc2b8;--on:#06201e;--soft:#16393a;--ok:#6fd392;--okb:#173a27;--warn:#f0bd62;--warnb:#3d2f12;--bad:#f2928a;--badb:#431e1b;--info:#8fb8f0;--infob:#192f4d;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 "Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
+header{background:var(--card);border-bottom:1px solid var(--bd);padding:12px 16px 0}
+.brand{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700}.brand small{font-weight:400;color:var(--mut);font-size:13px}
+nav{display:flex;gap:4px;overflow-x:auto;margin-top:10px}
+nav button{background:none;border:0;border-bottom:3px solid transparent;padding:9px 12px;color:var(--mut);font:inherit;font-weight:600;cursor:pointer;white-space:nowrap}
+nav button.on{color:var(--pri);border-color:var(--pri)}
+main{max-width:1100px;margin:0 auto;padding:16px}
+h2{margin:0;font-size:20px}h3{margin:0 0 10px;font-size:16px}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));margin-bottom:14px}
+.stat{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:12px 14px}.stat b{display:block;font-size:26px;line-height:1.2}.stat span{color:var(--mut);font-size:13px}
+.two{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.panel{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:14px}
+.row{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid var(--bd)}.row:first-of-type{border-top:0}.row i{color:var(--mut);font-style:normal;font-size:13px;display:block}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0}.bar .sp{flex:1}
+input,select,textarea{font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:8px 10px;width:100%}
+.bar input,.bar select{width:auto;min-width:150px}
+.btn{background:var(--pri);color:var(--on);border:0;border-radius:6px;padding:8px 14px;font:inherit;font-weight:600;cursor:pointer}
+.btn.g{background:none;color:var(--pri);border:1px solid var(--bd);padding:4px 9px;font-size:13px}.btn.g.d{color:var(--bad)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--pri);outline-offset:1px}
+.wrap{overflow-x:auto;background:var(--card);border:1px solid var(--bd);border-radius:8px}
+table{border-collapse:collapse;width:100%;min-width:640px}th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--bd);font-size:14px;vertical-align:top}th{color:var(--mut);font-weight:600;font-size:13px;background:var(--bg)}tr:last-child td{border-bottom:0}
+td.a{white-space:nowrap;text-align:right}
+.b{display:inline-block;padding:1px 9px;border-radius:99px;font-size:12px;font-weight:600}.ok{background:var(--okb);color:var(--ok)}.warn{background:var(--warnb);color:var(--warn)}.bad{background:var(--badb);color:var(--bad)}.info{background:var(--infob);color:var(--info)}
+.empty{padding:26px;text-align:center;color:var(--mut)}
+.beds{display:flex;flex-wrap:wrap;gap:6px}.beds span{padding:5px 9px;border-radius:6px;font-size:12px;font-weight:600}
+dialog{border:1px solid var(--bd);border-radius:10px;background:var(--card);color:var(--tx);width:min(460px,94vw);padding:18px}dialog::backdrop{background:rgba(0,0,0,.45)}
+label{display:block;font-size:13px;color:var(--mut);margin:10px 0 3px}
+.fa{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+.sum{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+</style></head><body>
+<header><div class="brand">🏥 CityCare Hospital <small>Management System</small></div><nav id="nav"></nav></header>
+<main id="main"></main>
+<dialog id="dlg"><form id="frm"><h3 id="dt"></h3><div id="fields"></div><div class="fa"><button type="button" class="btn g" id="cx">Cancel</button><button class="btn">Save</button></div></form></dialog>
+<script>
+const iso=n=>{const x=new Date();x.setDate(x.getDate()+n);return x.toISOString().slice(0,10)};
+const T=iso(0),esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const seed=()=>({
+staff:[['Dr. Anita Sen','Doctor','Cardiology','Morning',0],['Dr. Rahul Das','Doctor','Surgery','Night',0],['Dr. Meera Roy','Doctor','Orthopedics','Evening',1],['Priya Ghosh','Nurse','ICU','Night',0],['Sunita Paul','Nurse','Ward A','Morning',0],['Joy Barman','Nurse','Operation Theatre','Evening',1]].map(a=>({id:uid(),name:a[0],role:a[1],dept:a[2],shift:a[3],date:iso(a[4]),phone:''})),
+patients:[['Amit Sharma',45,'Male','Chest pain','Dr. Anita Sen',-3,'Critical'],['Rina Das',32,'Female','Appendicitis','Dr. Rahul Das',-1,'Admitted'],['Sourav Ghosh',60,'Male','Knee arthritis','Dr. Meera Roy',-5,'Admitted'],['Kavita Singh',28,'Female','Wrist fracture','Dr. Meera Roy',-10,'Discharged']].map(a=>({id:uid(),name:a[0],age:a[1],gender:a[2],disease:a[3],doctor:a[4],admitted:iso(a[5]),status:a[6]})),
+beds:[['ICU-1','ICU','Occupied','Amit Sharma'],['ICU-2','ICU','Available',''],['GEN-1','General','Occupied','Rina Das'],['GEN-2','General','Available',''],['GEN-3','General','Maintenance',''],['PVT-1','Private','Occupied','Sourav Ghosh'],['PVT-2','Private','Available',''],['ER-1','Emergency','Available','']].map(a=>({id:uid(),bed:a[0],ward:a[1],status:a[2],patient:a[3]})),
+meds:[['Paracetamol 500mg','Painkiller',240,2,60],['Amoxicillin 250mg','Antibiotic',15,8,200],['Atorvastatin 20mg','Cardiac',90,6,300],['Propofol 20ml','Anesthesia',12,310,120],['Ketorolac inj.','Painkiller',48,22,25],['Normal saline 500ml','Other',130,35,400]].map(a=>({id:uid(),name:a[0],category:a[1],stock:a[2],price:a[3],expiry:iso(a[4])})),
+surg:[['Rina Das','Appendectomy','Dr. Rahul Das','OT-1',2,'Scheduled',''],['Sourav Ghosh','Knee replacement','Dr. Meera Roy','OT-2',6,'Scheduled','Pre-op tests pending'],['Amit Sharma','Angioplasty','Dr. Anita Sen','OT-3',11,'Scheduled',''],['Kavita Singh','Wrist fracture fixation','Dr. Meera Roy','OT-2',-9,'Completed','Recovered well'],['Meena Roy','Gallbladder removal','Dr. Rahul Das','OT-1',-20,'Completed',''],['Dev Kapoor','Hernia repair','Dr. Rahul Das','OT-1',-14,'Cancelled','Patient postponed']].map(a=>({id:uid(),patient:a[0],procedure:a[1],surgeon:a[2],theatre:a[3],date:iso(a[4]),status:a[5],notes:a[6]}))});
+let D;try{D=JSON.parse(localStorage.getItem('citycare-hms'))}catch(e){}
+if(!D||!D.staff)D=seed();
+const save=()=>{try{localStorage.setItem('citycare-hms',JSON.stringify(D))}catch(e){}};
+const docs=()=>[...new Set(D.staff.filter(s=>s.role==='Doctor').map(s=>s.name))];
+const pats=()=>D.patients.map(p=>p.name);
+const B={Available:'ok',Occupied:'bad',Maintenance:'warn',Scheduled:'info',Completed:'ok',Cancelled:'bad',Admitted:'info',Discharged:'ok',Critical:'bad'};
+const days=d=>Math.round((new Date(d)-new Date(T))/864e5);
+const when=r=>{if(r.status!=='Scheduled')return'';const n=days(r.date);return n<0?'<span class="b bad">'+(-n)+' days overdue</span>':n===0?'<span class="b warn">Today</span>':'in '+n+' day'+(n>1?'s':'')};
+// field: [key,label,type,options]  types: t text, n number, d date, s select, a textarea
+const C={
+staff:{t:'Doctor & nurse duty',add:'Add duty',f:[['name','Name'],['role','Role','s',['Doctor','Nurse']],['dept','Department / ward'],['shift','Shift','s',['Morning','Evening','Night']],['date','Duty date','d'],['phone','Phone']],flt:'shift',ord:'date'},
+patients:{t:'Patients',add:'Add patient',f:[['name','Name'],['age','Age','n'],['gender','Gender','s',['Male','Female','Other']],['disease','Diagnosis'],['doctor','Doctor','s',docs],['admitted','Admitted on','d'],['status','Status','s',['Admitted','Critical','Discharged']]],flt:'status'},
+beds:{t:'Beds',add:'Add bed',f:[['bed','Bed no.'],['ward','Ward','s',['General','ICU','Private','Emergency']],['status','Status','s',['Available','Occupied','Maintenance']],['patient','Patient','s',pats]],flt:'status'},
+meds:{t:'Medicines',add:'Add medicine',f:[['name','Medicine'],['category','Category','s',['Antibiotic','Painkiller','Cardiac','Anesthesia','Other']],['stock','Stock (units)','n'],['price','Price per unit (₹)','n'],['expiry','Expiry date','d']],flt:'category',ord:'name'},
+surg:{t:'Surgeries',add:'Schedule surgery',f:[['patient','Patient','s',pats],['procedure','Procedure'],['surgeon','Surgeon','s',docs],['theatre','Theatre','s',['OT-1','OT-2','OT-3']],['date','Date','d'],['status','Status','s',['Scheduled','Completed','Cancelled']],['notes','Notes','a']],flt:'status',ord:'date',x:['When',when]}};
+const TABS=[['dash','Dashboard'],['staff','Duty roster'],['beds','Beds'],['patients','Patients'],['meds','Medicines'],['surg','Surgeries']];
+let view='dash',q='',fv='';
+const cell=(r,f)=>{const v=r[f[0]];if(f[2]==='s'&&B[v])return'<span class="b '+B[v]+'">'+esc(v)+'</span>';
+ if(f[0]==='stock')return esc(v)+(v<=20?' <span class="b bad">Low</span>':'');
+ if(f[0]==='expiry'&&days(v)<=30)return esc(v)+' <span class="b warn">'+(days(v)<0?'Expired':'Expiring')+'</span>';
+ if(f[0]==='price')return '₹'+esc(v);return esc(v)||'–'};
+function nav(){document.getElementById('nav').innerHTML=TABS.map(t=>'<button class="'+(t[0]===view?'on':'')+'" onclick="go(\''+t[0]+'\')">'+t[1]+'</button>').join('')}
+function go(v){view=v;q='';fv='';draw()}
+function dash(){
+ const up=D.surg.filter(s=>s.status==='Scheduled').sort((a,b)=>a.date.localeCompare(b.date));
+ const free=D.beds.filter(b=>b.status==='Available').length,low=D.meds.filter(m=>m.stock<=20);
+ const duty=D.staff.filter(s=>s.date===T);
+ const st=[[D.patients.filter(p=>p.status!=='Discharged').length,'Patients admitted'],[free+' / '+D.beds.length,'Beds available'],[duty.length,'Staff on duty today'],[up.length,'Upcoming surgeries'],[low.length,'Medicines low in stock']];
+ return '<div class="grid">'+st.map(s=>'<div class="stat"><b>'+s[0]+'</b><span>'+s[1]+'</span></div>').join('')+'</div><div class="two">'+
+ '<div class="panel"><h3>Upcoming surgeries</h3>'+(up.slice(0,6).map(s=>'<div class="row"><div>'+esc(s.procedure)+'<i>'+esc(s.patient)+' · '+esc(s.surgeon)+' · '+esc(s.theatre)+'</i></div><div style="text-align:right">'+esc(s.date)+'<i>'+when(s)+'</i></div></div>').join('')||'<div class="empty">No surgeries scheduled.</div>')+'</div>'+
+ '<div class="panel"><h3>On duty today</h3>'+(duty.map(s=>'<div class="row"><div>'+esc(s.name)+'<i>'+esc(s.role)+' · '+esc(s.dept)+'</i></div><span class="b info">'+esc(s.shift)+'</span></div>').join('')||'<div class="empty">Nobody is rostered today.</div>')+'</div>'+
+ '<div class="panel"><h3>Bed status</h3><div class="beds">'+D.beds.map(b=>'<span class="'+B[b.status]+'" title="'+esc(b.patient)+'">'+esc(b.bed)+'</span>').join('')+'</div></div>'+
+ '<div class="panel"><h3>Low stock medicines</h3>'+(low.map(m=>'<div class="row"><div>'+esc(m.name)+'<i>'+esc(m.category)+'</i></div><span class="b bad">'+m.stock+' left</span></div>').join('')||'<div class="empty">All medicines are well stocked.</div>')+'</div></div>'}
+function list(k){
+ const c=C[k];let rows=[...D[k]];if(c.ord)rows.sort((a,b)=>String(a[c.ord]).localeCompare(String(b[c.ord])));
+ if(q)rows=rows.filter(r=>JSON.stringify(Object.values(r)).toLowerCase().includes(q.toLowerCase()));
+ if(fv)rows=rows.filter(r=>r[c.flt]===fv);
+ const fi=c.f.find(f=>f[0]===c.flt),opts=fi[3];
+ let sum='';
+ if(k==='surg'){const n=s=>D.surg.filter(r=>r.status===s).length;sum='<div class="sum"><span class="b info">Total records: '+D.surg.length+'</span><span class="b info">Scheduled: '+n('Scheduled')+'</span><span class="b ok">Completed: '+n('Completed')+'</span><span class="b bad">Cancelled: '+n('Cancelled')+'</span></div>'}
+ return '<div class="bar"><h2>'+c.t+'</h2><span class="sp"></span><input id="q" placeholder="Search" value="'+esc(q)+'" oninput="q=this.value;draw(true)"><select onchange="fv=this.value;draw()"><option value="">All '+fi[1].toLowerCase()+'s</option>'+(opts||[]).map(o=>'<option'+(o===fv?' selected':'')+'>'+o+'</option>').join('')+'</select><button class="btn" onclick="form(\''+k+'\')">+ '+c.add+'</button></div>'+sum+
+ '<div class="wrap" style="margin-top:12px">'+(rows.length?'<table><tr>'+c.f.map(f=>'<th>'+f[1]+'</th>').join('')+(c.x?'<th>'+c.x[0]+'</th>':'')+'<th></th></tr>'+rows.map(r=>'<tr>'+c.f.map(f=>'<td>'+cell(r,f)+'</td>').join('')+(c.x?'<td>'+c.x[1](r)+'</td>':'')+'<td class="a"><button class="btn g" onclick="form(\''+k+'\',\''+r.id+'\')">Edit</button> <button class="btn g d" onclick="del(\''+k+'\',\''+r.id+'\',this)">Delete</button></td></tr>').join('')+'</table>':'<div class="empty">Nothing here yet. Use the button above to add a record.</div>')+'</div>'}
+function draw(keep){nav();document.getElementById('main').innerHTML=view==='dash'?dash():list(view);if(keep){const i=document.getElementById('q');i.focus();i.setSelectionRange(q.length,q.length)}}
+let cur;
+function form(k,id){const c=C[k],r=id?D[k].find(x=>x.id===id):{};cur={k,id};
+ document.getElementById('dt').textContent=(id?'Edit ':'New ')+c.t.toLowerCase().replace(/s$/,'');
+ document.getElementById('fields').innerHTML=c.f.map((f,i)=>{const v=r[f[0]]==null?'':r[f[0]],n='name="'+f[0]+'"';let h;
+  if(f[2]==='s'){let o=typeof f[3]==='function'?f[3]():f[3];if(v&&!o.includes(v))o=[...o,v];h='<select '+n+'><option value="">Select</option>'+o.map(x=>'<option'+(x===v?' selected':'')+'>'+esc(x)+'</option>').join('')+'</select>'}
+  else if(f[2]==='a')h='<textarea '+n+' rows="2">'+esc(v)+'</textarea>';
+  else h='<input '+n+' type="'+(f[2]==='n'?'number':f[2]==='d'?'date':'text')+'" value="'+esc(v)+'"'+(f[2]==='n'?' min="0"':'')+(i<1||f[2]==='d'?' required':'')+'>';
+  return'<label>'+f[1]+'</label>'+h}).join('');
+ document.getElementById('dlg').showModal()}
+document.getElementById('cx').onclick=()=>document.getElementById('dlg').close();
+document.getElementById('frm').onsubmit=e=>{e.preventDefault();const fd=new FormData(e.target),c=C[cur.k],o={};
+ c.f.forEach(f=>{let v=fd.get(f[0])||'';if(f[2]==='n')v=v===''?0:Number(v);o[f[0]]=v});
+ if(cur.id)Object.assign(D[cur.k].find(x=>x.id===cur.id),o);else D[cur.k].push({id:uid(),...o});
+ save();document.getElementById('dlg').close();draw()};
+function del(k,id,btn){if(btn.dataset.s){D[k]=D[k].filter(x=>x.id!==id);save();draw()}else{btn.dataset.s=1;btn.textContent='Confirm?';setTimeout(()=>{btn.dataset.s='';btn.textContent='Delete'},3000)}}
+draw();
+</script></body></html>
